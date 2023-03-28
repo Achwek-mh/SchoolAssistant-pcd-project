@@ -50,14 +50,7 @@ def recognize_speech():
     try:
         text = r.recognize_google(audio, language='fr-FR')
         if text:
-            """ my_json_str = json.dumps(text)
-            data = json.loads(my_json_str)
-            transcripts = data['alternative']
-            # Sort the transcripts by confidence score in descending order
-            sorted_transcripts = sorted(transcripts, key=lambda t:t.get('confidence', 0), reverse=True)
-            # Get the highest confidence transcript
-            highest_confidence_transcript = sorted_transcripts[0]['transcript']
-            print("Transcript with highest confidence: ", highest_confidence_transcript) """
+
             return(text)
         else:
             print("No speech detected")
@@ -66,12 +59,7 @@ def recognize_speech():
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
         
-""" def extract_entities(query):
-    doc = nlp(query)
-    entities = []
-    for ent in doc.ents:
-        entities.append(ent.text)
-    return entities """
+
 
 
 def speak(text):
@@ -117,16 +105,7 @@ def get_teacher_name(query):
     # Use SVC to predict teacher name
     prediction = classifier.predict(query_tfidf)
 
-    """ highest_score = 0
-    best_match = ""
-    for teacher in teachers:
-        score = fuzz.token_set_ratio(teacher.lower(), prediction[0].lower())
-        if score > highest_score:
-            highest_score = score
-            best_match = teacher
 
-    # Return best matched teacher name
-    print(best_match) """
     print(prediction[0])
     return prediction[0]
 
