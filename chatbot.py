@@ -7,20 +7,17 @@ from sklearn.metrics import precision_score
 import speech_recognition as sr
 import mysql.connector
 
-
-
-
 # Charger les données d'entraînement
 db = mysql.connector.connect(
     host="localhost",
     user="simplebot",
-    password ="22098.Achw",
-    database="anotherbot"
+    password ="",
+    database="PCD"
 )
 
 # Get teacher information data from MySQL database
 cursor = db.cursor()
-cursor.execute("SELECT name, info FROM ensinfo")
+cursor.execute("SELECT Nom, Info FROM prof")
 result = cursor.fetchall()
 
 # Create lists of teacher names and their corresponding information
