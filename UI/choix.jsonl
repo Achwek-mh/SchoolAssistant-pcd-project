@@ -1,6 +1,10 @@
-{"question":"espace profile", "reponse": "profil"}
-{"question": "profile", "reponse": "profil"}
-{"question": "résultat", "reponse": "result"}
+{"question":"espace profile", "reponse":"profil"}
+{"question":"espace profil", "reponse":"profil"}
+{"question":"espace profils", "reponse":"profil"}
+{"question":"profile", "reponse":"profil"}
+{"question":"résultat", "reponse": "result"}
+{"question":"resultat", "reponse":"result"}
+{"question": "result", "reponse": "result"}
 {"question": "espace résultat", "reponse": "result"}
 {"question": "sujet", "reponse": "sujet"}
 {"question": "espace sujet", "reponse": "sujet"}

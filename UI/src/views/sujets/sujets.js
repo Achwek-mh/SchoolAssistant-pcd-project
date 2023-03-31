@@ -1,5 +1,5 @@
 import { Routes , Route , useNavigate } from "react-router-dom";
-import React from "react";
+import { useState ,useEffect } from "react";import React from "react";
 import {
   Button,
   Label,
@@ -13,13 +13,21 @@ import {
   Row,
   Col
 } from "reactstrap";
-import "../assets/css/nucleo-icons.css";
-import "../assets/scss/blk-design-system-react.scss";
-import "../assets/demo/demo.css";
+
 // reactstrap components
 
 export default function Sujet() {
+  useEffect=() =>{
+    redirect()
+      }
 
+    
+      const redirect=async(e)=>{
+        const res=await fetch('http://localhost:5000/opensujet');
+        const data = await res.json();
+       
+    
+      };
 
   const navigate = useNavigate();
   const navigatetoPCD=()=>{

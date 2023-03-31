@@ -43,7 +43,7 @@ export default function Profil() {
     <h1 style={{marginTop:'80px'}}>ESPACE PROFIL</h1>
     <h2>Spécifier precisemment votre choix:</h2>
 
-    <Button className="btn-round" color="primary" type="button" onClick={(e)=>{navigatetoprof(e)}}>
+    <Button className="btn-round" color="primary" type="button" onClick={navigatetoprof}>
             Profils des Profs
             </Button>
             <Button className="btn-round" color="primary" type="button" onClick={navigatetoetudiant}>

@@ -16,11 +16,31 @@
 
 */
 import React from "react";
+import { lazy } from "react";
 
 // core components
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import PageHeader from "components/PageHeader/PageHeader.js";
-import Footer from "components/Footer/Footer.js";
+import Prof from "views/profils/prof.js";
+import Etud from "views/profils/etud.js";
+
+const Profil= lazy(() => import("../views/profils/profils.js"));
+const Event= lazy(() => import("../views/event.js"));
+const Sujet= lazy(() => import("../views/sujets/sujets.js"));
+const Reunion= lazy(() => import("../views/reunions/reunion.js"));
+const Online= lazy(() => import("../views/reunions/online.js"));
+const Presentiel= lazy(() => import("../views/reunions/presentiel.js"));
+const Sujetpcd= lazy(() => import("../views/sujets/sujet_pcd.js"));
+const Sujetpfe= lazy(() => import("../views/sujets/sujet_pfe.js"));
+const Sujetpe= lazy(() => import("../views/sujets/sujet_pe.js"));
+
+const Result= lazy(() => import("../views/result/result.js"));
+const ResultPCD= lazy(() => import("../views/result/result_pcd.js"));
+const ResultPFE= lazy(() => import("../views/result/result_pfe.js"));
+const ResultPE= lazy(() => import("../views/result/result_pe.js"));
+const ResultEXAM= lazy(() => import("../views/result/result_exam.js"));
+
+/*import Footer from "components/Footer/Footer.js"; */
 
 
 
@@ -36,8 +56,9 @@ export default function Index() {
     <>
       <IndexNavbar />
       <div className="wrapper">
-        <PageHeader />
         <div className="main">
+        <PageHeader />
+      
         {/*   <Basics />
           <Navbars />
           <Tabs />
@@ -50,7 +71,6 @@ export default function Index() {
           <Examples />
           <Download /> */}
         </div>
-        <Footer />
       </div>
     </>
   );

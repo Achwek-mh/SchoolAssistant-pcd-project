@@ -5,6 +5,7 @@ import React from "react";
 import {
   Button,
   Label,
+Form,
   FormGroup,
   CustomInput,
   Input,
@@ -64,7 +65,7 @@ export default function Prof() {
         event.preventDefault()
 
         // Send the message to your Flask backend
-        const response = await fetch("http://localhost:5000/answer", {
+        const response = await fetch("http://localhost:5000/answerpcd", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -78,23 +79,33 @@ export default function Prof() {
       
       }
   return (
-   <div>
-
-    <h1 style={{marginTop:'80px'}}>ESPACE PROF</h1>
-    <h2>Spécifier precisemment votre choix:</h2>
+    <div className="page-header header-filter">
+    <div className="squares square1" />
+    <div className="squares square2" />
+    <div className="squares square3" />
+    <div className="squares square4" />
+    <div className="squares square5" />
+    <div className="squares square6" />
+    <div className="squares square7" />
+    <Container>
+      <div className="content-center brand">
+    <h1 style={{marginTop:'380px'}}>ESPACE PROF</h1>
+    <h2>S'informer à propos des étudiants:</h2>
     <div>
-    <form onSubmit={handleSubmit}>
-        <input
+    <Form onSubmit={handleSubmit}>
+        <Input
           type="text"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
         />
-        <button type="submit">Send</button>
-        <button onClick={(e)=>handleSpeechRecognition(e)}>Speak</button>
-      </form>
+        <Button type="submit">Send</Button>
+        <Button onClick={(e)=>handleSpeechRecognition(e)}>Speak</Button>
+      </Form>
       <p>Answer: {answer}</p>
     </div>
              
    </div>
+      </Container>
+    </div>
   );
 }

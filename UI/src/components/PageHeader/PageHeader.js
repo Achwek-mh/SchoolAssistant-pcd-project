@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* BLK Design System React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/blk-design-system-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/blk-design-system-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import { Routes , Route , useNavigate } from "react-router-dom";
 import React from "react";
 import {
@@ -35,26 +18,26 @@ import "assets/demo/demo.css";
 // reactstrap components
 
 export default function PageHeader() {
-  useEffect=() =>{
-    redirect()
-      }
+  const redirect=async(e)=>{
+    const res=await fetch('http://localhost:5000/open_website');
+    const data = await res.json();
+   
 
-    
-      const redirect=async(e)=>{
-        const res=await fetch('http://localhost:5000/open_website');
-        const data = await res.json();
-       
-    
-      };
+  };
+  useEffect=(() =>{
+    redirect()
+      });
+ 
 const navigate = useNavigate();
-const navigatetoprofil=()=>{
-navigate('/profil')
+const navigatetoprofil=(e)=>{
+  e.preventDefault();
+navigate('/profil');
 }
 const navigatetosujet=()=>{
-navigate('/sujet')
+navigate('/sujet');
 }
 const navigatetoresult=()=>{
-navigate('/result')
+navigate('/result');
 }
 
   return (
