@@ -8,3 +8,5 @@
 {"question": "espace résultat", "reponse": "result"}
 {"question": "sujet", "reponse": "sujet"}
 {"question": "espace sujet", "reponse": "sujet"}
+{"question": "bye", "reponse": "bye"}
+{"question": "back", "reponse": "bye"}

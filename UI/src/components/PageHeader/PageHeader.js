@@ -52,9 +52,7 @@ navigate('/result');
       <Container>
         <div className="content-center brand">
           <h1 className="h1-seo">Ensi smart Assistant</h1>
-          <h3 className="d-none d-sm-block">
-          Welcome
-          </h3>
+          
           <Button className="btn-round" color="primary" type="button" onClick={(e)=>{navigatetoprofil(e)}}>
             Espace profils
             </Button>

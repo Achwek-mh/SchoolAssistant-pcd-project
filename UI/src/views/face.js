@@ -62,10 +62,17 @@ useEffect(() => {
 
 
   return (
+    <div className="page-header header-filter">
+      <div className="wrapper">
+    <div className="page-header">
+    <div className="content-center">
+
+      <Container>
+        <div className="content-center brand" ></div>
       <>
           {logged_in == false ?
           <>
-          <div className="form-group">
+          <div className="form-group"  >
               <input type="submit" value="Authenticate Me" onClick={()=>{login()}} className="btn btn-primary" />
           </div>
           </>
@@ -91,8 +98,15 @@ useEffect(() => {
           </div>}
           </div>
           
-          }
-      </>
+          }  </>
+          
+      </Container>
+    </div>
+    </div>
+    </div>
+    </div>
+     
+     
   )
 }
         

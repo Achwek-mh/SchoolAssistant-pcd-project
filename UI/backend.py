@@ -140,12 +140,19 @@ def video():
 @app.route('/video_url')
 def video_url():
     return jsonify('http://localhost:5000/video')
+
+
 db = mysql.connector.connect(
         host="localhost",
 user="simplebot",
 password ="22098.Achw",
 database="PCD"
 )
+
+@app.route('/speaker')
+def speak_answer():
+    engine.say("proposez votre question")
+    engine.runAndWait()
 def rec():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -211,11 +218,20 @@ def base(table):
         engine.say(answer)
         engine.runAndWait()
     text = request.json['message']
-    predicted_answer = predict_answer(text)
-    speak_answer(predicted_answer)  # Uncomment this line to speak the answer
-    print(predicted_answer)
 
-    return jsonify({'answer': predicted_answer})
+    if text!="bye":
+            predicted_answer = predict_answer(text)
+            speak_answer(predicted_answer)  # Uncomment this line to speak the answer
+            print(predicted_answer)
+
+            return jsonify({'answer': predicted_answer})
+    else:
+
+           speak_answer("à très bientôt")
+           webbrowser.open("http://localhost:3000/")
+        
+
+   
 
 app = Flask(__name__)
 CORS(app)
@@ -256,20 +272,27 @@ def direction(file,choices):
         return {"question": question,"question_data":question_data, "answer": answer[0]}
     # Exemple d'utilisation
     while True:
-        speak_answer("proposer votre question")
+        speak_answer("Sur quoi vous voulez s'informer ?")
         question = rec()
         #question=input("question  ")
         result = predict_answer(question)
+        if result["answer"]=="bye":
+           speak_answer("à très bientôt")
+           
         print("Question Proposée est:", result["question_data"])
         print("reponse :", result["answer"])
         #speak_answer(result["answer"])
         if result["answer"]!="unknown":
             webbrowser.open(choices[result["answer"]])
             break
+        if result["answer"]=="bye":
+           speak_answer("â très bientôt")
+           break
         
 @app.route('/open_website')
 
 def open_website():
+    speak_answer("Bienvenue.")
     print("open website")
     result= "http://localhost:3000/result"
     sujet = "http://localhost:3000/sujet"
@@ -278,23 +301,29 @@ def open_website():
     choices['result']=result
     choices['sujet']=sujet
     choices['profil']=profil
-    choices['unknown']='google.com'
+    choices['bye']='http://localhost:3000/'
     direction("choix.jsonl",choices)
     return ""
 
 @app.route('/openprofil')
 def openprof():
+
     print("openprofile")
+    speak_answer("voila l'espace profil.")
     etudiant = "http://localhost:3000/etud"
     prof = "http://localhost:3000/prof"
     choices={}
     choices['etudiant']=etudiant
     choices['professeur']=prof
+    choices['bye']='http://localhost:3000/'
+
     direction("chix2.jsonl",choices)
     return ""
 
 @app.route('/opensujet')
 def opensujet():
+    speak_answer("voila l'espace sujet.")
+
     pcd = "http://localhost:3000/sujet_pcd"
     pfe = "http://localhost:3000/sujet_pfe"
     pe="http://localhost:3000/sujet_pe"
@@ -302,12 +331,16 @@ def opensujet():
     choices['sujet_pcd']=pcd
     choices['sujet_pe']=pe
     choices['sujet_pfe']=pfe
+    choices['bye']='http://localhost:3000/'
+
     direction("sujet.jsonl",choices)
     return ""
 
 
 @app.route('/openresult')
 def openresult():
+    speak_answer("voila l'espace résultat.")
+
     print("open website")
     pcd= "http://localhost:3000/result_pcd"
     pfe = "http://localhost:3000/result_pfe"
@@ -468,7 +501,7 @@ def login():
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)            
             rand_no = np.random.random_sample()
             cv2.imwrite(str(rand_no)+".jpg", frame)  
-        print(msg)
-        return msg
+        print(frame)
+        return (msg)
 
 app.run(port=5000,debug=True)

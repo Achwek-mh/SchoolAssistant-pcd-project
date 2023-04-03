@@ -78,6 +78,7 @@ export default function Prof() {
         setAnswer(data.answer)
       
       }
+    
   return (
     <div className="page-header header-filter">
     <div className="squares square1" />
