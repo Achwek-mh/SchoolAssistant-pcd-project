@@ -46,6 +46,7 @@ export default function Sujetpcd() {
       const [message, setMessage] = useState("");
 
       const handleSpeechRecognition = (e) => {
+        console.log("hi")
         e.preventDefault()
         const recognition = new window.webkitSpeechRecognition();
         recognition.continuous = false;
@@ -63,9 +64,9 @@ export default function Sujetpcd() {
     
       const handleSubmit = async (event) => {
         event.preventDefault()
-
+         console.log("reff")
         // Send the message to your Flask backend
-        const response = await fetch("http://localhost:5000/answerpcd", {
+        const response = await fetch("http://localhost:5000/answersujet_pcd", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -99,16 +100,20 @@ export default function Sujetpcd() {
           onChange={(event) => setMessage(event.target.value)}
         />
        
-      </Form>
+     
       <Input
           type="text"
           value={answer}
         />  
          <Button type="submit">Send</Button>
-        <Button onClick={(e)=>handleSpeechRecognition(e)}>Speak</Button>  </div>
-             
+        <Button onClick={(e)=>handleSpeechRecognition(e)}>Speak</Button>  
+        </Form>
+   
+   </div> 
    </div>
+ 
       </Container>
-    </div>
+      </div>
+
   );
 }

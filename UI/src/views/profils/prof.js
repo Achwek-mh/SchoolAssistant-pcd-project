@@ -98,10 +98,16 @@ export default function Prof() {
           value={message}
           onChange={(event) => setMessage(event.target.value)}
         />
-        <Button type="submit">Send</Button>
-        <Button onClick={(e)=>handleSpeechRecognition(e)}>Speak</Button>
-      </Form>
-      <p>Answer: {answer}</p>
+       
+     
+      <Input
+          type="text"
+          value={answer}
+        />  
+         <Button type="submit">Send</Button>
+        <Button onClick={(e)=>handleSpeechRecognition(e)}>Speak</Button>  
+        </Form>
+   
     </div>
              
    </div>

@@ -11,6 +11,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
+  ButtonGroup,
   Container,
   Col
 } from "reactstrap";
@@ -24,7 +25,7 @@ export default function Profil() {
 
         
           const redirect=async(e)=>{
-            const res=await fetch('http://localhost:5000/openprof');
+            const res=await fetch('http://localhost:5000/openprofil');
             const data = await res.json();
            
         
@@ -38,18 +39,26 @@ export default function Profil() {
   }
  
   return (
-   <div>
+    <div className="wrapper">
+    <div className="page-header">
+    <div className="content-center">
 
-    <h1 style={{marginTop:'80px'}}>ESPACE PROFIL</h1>
+      <Container>
+        <div className="content-center brand">
+
+    <h1  style={{float:'center'}}>ESPACE PROFIL</h1>
     <h2>Spécifier precisemment votre choix:</h2>
-
-    <Button className="btn-round" color="primary" type="button" onClick={navigatetoprof}>
+    <Button className="btn-round mx-2 bold" color="primary" type="button" onClick={navigatetoprof}>
             Profils des Profs
             </Button>
-            <Button className="btn-round" color="primary" type="button" onClick={navigatetoetudiant}>
+            <Button className="btn-round  bold" color="primary" type="button" onClick={navigatetoetudiant}>
 profils des étudiants
                          </Button>
-           
-   </div>
+
+                         </div>
+      </Container>
+    </div>
+    </div>
+    </div>
   );
 }
