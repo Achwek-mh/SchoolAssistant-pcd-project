@@ -1,21 +1,30 @@
 import { Routes , Route , useNavigate } from "react-router-dom";
-import axios from "axios";
-import Webcam from 'react-webcam';
-import React, { useState, useEffect, useRef,useCallback } from "react";
+import React from "react";
+import { useState , useEffect, useRef , Component }  from "react";
+
+
 import {
   Button,
   Label,
-  Form,
   CustomInput,
   Input,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
   Container,
+  
   Row,
   Col
 } from "reactstrap";
-export default function Face ()  {
+import Webcam from 'react-webcam';
+
+
+// reactstrap components
+
+export default function Face () {
+    const [showCamera, setShowCamera] = useState(false);
+ 
+
   const handleSpeechRecognition =() => {
     
     const recognition = new window.webkitSpeechRecognition();
@@ -119,47 +128,66 @@ useEffect(() => {
    handleSpeechRecognition()
   }, [message]);
  
-    const formData = new FormData();
-    formData.append('image', 'hello');
-    const sub =  {
+   
+    return (
+      <div className="page-header header-filter">
+        <div className="wrapper">
+      <div className="page-header">
+      <div className="content-center">
   
-
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      body: formData
-    }
-    const subb =async(e)=>{
-      e.preventDefault()
-    await fetch('http://localhost:5000/reg', sub)} 
-   
-  return (
-    <div className="page-header header-filter">
-    <div className="wrapper">
-  <div className="page-header">
-  <div className="content-center">
-
-    
-      <div className="content-center brand" ></div>
-      <Form  onSubmit= {(e)=>{subb(e)}} >
-        
-         <Button type="submit">Send</Button>
-        </Form>
-
-    
-        
- 
-  </div>
-  </div>
-  </div>
-  </div>
-   
-   
-)
-
- 
+        <Container>
+          <div className="content-center brand" ></div>
+        <>
+            {logged_in == false ?
+            <>
+           
+            <div className="form-group">
+                
+                    <div>
+                    <Webcam
+        audio={false}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+        width={640}
+        height={480}
+      />
+                    </div>
+           
+                </div>
+            </>
+            :
+            <div>
+               {name != (null || "You are unknown") ?
+            <>
+                <div className="details">
+                    <h1>Hello {name} !</h1>
+                    <br />
+                    <h1>You are successfully logged in to the system.
+                    you wil be redirected after :{logged_in && <p>{timeLeft}</p>} 
+              </h1>
+       
+                    <div className="form-group">
+                    </div>  
+                </div>
+                </>
+            :
+            <div>
+              <p>"unknown"</p>
+            </div>}
+            </div>
+            
+            }  </>
+            
+        </Container>
+      </div>
+      </div>
+      </div>
+      </div>
+       
+       
+    )
   }
-
+  
+  
 
 

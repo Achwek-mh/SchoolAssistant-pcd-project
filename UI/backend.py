@@ -477,7 +477,6 @@ def login():
             image_bytes = base64.b64decode(image_data)
             image_np = np.frombuffer(image_bytes, dtype=np.uint8)
             image = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
-            print(image)
             # Find all the faces in the image
             face_locations = face_recognition.face_locations(image)
             face_encodings = face_recognition.face_encodings(image, face_locations)
