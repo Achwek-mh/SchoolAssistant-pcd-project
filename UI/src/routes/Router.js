@@ -17,7 +17,7 @@ const Sujetpcd= lazy(() => import("../views/sujets/sujet_pcd.js"));
 const Sujetpfe= lazy(() => import("../views/sujets/sujet_pfe.js"));
 const Sujetpe= lazy(() => import("../views/sujets/sujet_pe.js"));
 const Face= lazy(() => import("../views/face.js"));
-
+const Général=lazy(() => import("../views/général.js"));
 const Result= lazy(() => import("../views/result/result.js"));
 const ResultPCD= lazy(() => import("../views/result/result_pcd.js"));
 const ResultPFE= lazy(() => import("../views/result/result_pfe.js"));
@@ -42,6 +42,10 @@ export default function Router(){
       },
       { path: "/prof",
       element: <Prof /> ,
+      
+      },
+      { path: "/general",
+      element: <Général/> ,
       
       },
       { path: "/etud",

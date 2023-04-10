@@ -1,84 +1,76 @@
-import { Routes , Route , useNavigate } from "react-router-dom";
-import { useState ,useEffect } from "react";
+import { useState, useEffect , useCallback} from "react";
+import {Button,Label,Form,FormGroup,CustomInput,Input,Container} from "reactstrap";
 
-import React from "react";
-import {
-  Button,
-  Label,
-Form,
-  FormGroup,
-  CustomInput,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
-import "assets/css/nucleo-icons.css";
-import "assets/scss/blk-design-system-react.scss";
-import "assets/demo/demo.css";
-// reactstrap components
+export default function Général() {
+  const [message, setMessage] = useState("");
+  const [answer, setAnswer] = useState("")
 
-export default function Prof() {
+  const handleSpeechRecognition =  useCallback(() => {
+    
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "fr-FR";
 
-    const [question, setQuestion] = useState('');
-    const [answer, setAnswer] = useState('')
-  
-    const handleQuestionChange = (event) => {
-      setQuestion(event.target.value);
+    recognition.onstart = () => {
+      console.log("Speech recognition started");
     };
- /*    const handleSubmit = (event) => {
-        event.preventDefault();
-        fetch('http://localhost:5000/answer', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setAnswer(data.answer);
-          })
-          .catch((error) => console.error(error));
-      }; */
-   
-      const [message, setMessage] = useState("");
 
-      const handleSpeechRecognition = (e) => {
-        e.preventDefault()
-        const recognition = new window.webkitSpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = "fr-FR";
-    
-        recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
-          console.log(transcript);
-          setMessage(transcript);
-        };
-    
-        recognition.start();
-      };
-    
-      const handleSubmit = async (event) => {
-        event.preventDefault()
+    recognition.onresult = (event) => {
+      let interimTranscript = "";
+      let finalTranscript = "";
 
-        // Send the message to your Flask backend
-        const response = await fetch("http://localhost:5000/answerprof", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message }),
-        });
-      
-        const data = await response.json();
-        console.log(data);
-        setAnswer(data.answer)
-      
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
       }
-    
+
+      setMessage(finalTranscript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error(event.error);
+    };
+
+    recognition.onend = () => {
+      console.log("Speech recognition ended");
+      handleSpeechRecognition();
+    };
+
+    recognition.start();
+  },[]);
+
+ 
+  const handleSubmit = useCallback(async () => {
+    if (message) {
+    // Send the message to your Flask backend
+    const response = await fetch("http://localhost:5000/answerprof", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message }),
+    });
+  
+    const data = await response.json();
+    console.log(data);
+    setAnswer(data.answer)}
+  
+  }, [message]);
+
+  useEffect(() => {
+    handleSpeechRecognition();
+  }, [handleSpeechRecognition]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(handleSubmit, 1500);
+    return () => clearTimeout(timeoutId);
+  }, [handleSubmit]);
   return (
     <div className="page-header header-filter">
     <div className="squares square1" />
@@ -91,9 +83,9 @@ export default function Prof() {
     <Container>
       <div className="content-center brand">
     <h1 style={{marginTop:'380px'}}>ESPACE PROF</h1>
-    <h2>S'informer à propos des étudiants:</h2>
-    <div>
-    <Form onSubmit={handleSubmit}>
+      <h2>Spécifier precisemment votre choix:</h2>
+      <div>
+      <Form /*  onSubmit={handleSubmit} */>
         <Input
           type="text"
           value={message}
@@ -106,13 +98,18 @@ export default function Prof() {
           value={answer}
         />  
          <Button type="submit">Send</Button>
-        <Button onClick={(e)=>handleSpeechRecognition(e)}>Speak</Button>  
         </Form>
-   
+     
     </div>
              
-   </div>
-      </Container>
-    </div>
-  );
-}
+             </div>
+                </Container>
+              </div>
+            );
+          }
+
+
+
+
+
+

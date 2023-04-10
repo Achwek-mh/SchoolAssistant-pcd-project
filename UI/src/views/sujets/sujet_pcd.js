@@ -90,19 +90,20 @@ export default function Sujetpcd() {
     <div className="squares square7" />
     <Container>
       <div className="content-center brand">
-    <h1 style={{marginTop:'380px'}}>ESPACE PROF</h1>
-    <h2>S'informer à propos des étudiants:</h2>
+    <h1 style={{marginTop:'380px'}}>SUJETS PCD</h1>
+    <h2>Posez votre question à props des sujets PCD :</h2>
     <div>
     <Form onSubmit={handleSubmit}>
-        <Input
+        <Input  style={{fontSize:'20px'}}
           type="text"
+
           value={message}
           onChange={(event) => setMessage(event.target.value)}
         />
        
      
       <Input
-          type="text"
+          type="textarea" style={{fontSize:'16px',marginTop:'20px'}}
           value={answer}
         />  
          <Button type="submit">Send</Button>

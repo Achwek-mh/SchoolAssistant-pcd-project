@@ -1,6 +1,10 @@
 from flask import Flask, jsonify, render_template,request,redirect
 import webbrowser
 from nltk.chat.util import Chat 
+from flask import send_file
+import base64
+
+import uuid
 import speech_recognition as sr
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
@@ -17,28 +21,11 @@ import face_recognition
 import numpy as np
 import os
 app=Flask(__name__)
+CORS(app)
 import time
 names=[0,0]
 # Load known faces from "known_faces" directory
-known_faces_dir = "faces"
-known_face_encodings = []
-known_face_names = []
 
-for filename in os.listdir(known_faces_dir):
-    if filename.endswith(".jpg") or filename.endswith(".png"):
-        # Load image and compute its encoding
-        image_path = os.path.join(known_faces_dir, filename)
-        image = face_recognition.load_image_file(image_path)
-        encoding = face_recognition.face_encodings(image)[0]
-        # Add encoding and name to arrays
-        known_face_encodings.append(encoding)
-        known_face_names.append(os.path.splitext(filename)[0])
-
-# Initialize variables
-face_locations = []
-face_encodings = []
-face_names = []
-process_this_frame = True
 def generate_frames():
     global known_face_encodings, known_face_names
 
@@ -233,8 +220,7 @@ def base(table):
 
    
 
-app = Flask(__name__)
-CORS(app)
+
 
 def direction(file,choices):
     with jsonlines.open(file) as f:
@@ -451,57 +437,114 @@ def recognize_speech():
                 'text': text
             }
         return json.dumps(response)
+known_faces_dir = "faces"
+known_face_encodings = []
+known_face_names = []
 
-@app.route("/login")
-def login():    
-        # Load known faces from "known_faces" directory
-        
-        global known_face_encodings, known_face_names
-        print(known_face_names)
+for filename in os.listdir(known_faces_dir):
+    if filename.endswith(".jpg") or filename.endswith(".png"):
+        # Load image and compute its encoding
+        image_path = os.path.join(known_faces_dir, filename)
+        image = face_recognition.load_image_file(image_path)
+        encoding = face_recognition.face_encodings(image)[0]
+        # Add encoding and name to arrays
+        known_face_encodings.append(encoding)
+        known_face_names.append(os.path.splitext(filename)[0])
 
-        # Initialize variables
+  
+ 
        
-      
-        video_capture = cv2.VideoCapture(0)
-        face_locations = []
-        face_encodings = []
-        face_names = []
-      
-        ret, frame = video_capture.read()
-        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-        rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
+known_faces = []
+known_names = []
+for filename in os.listdir('faces'):
+    image = face_recognition.load_image_file(os.path.join('faces', filename))
+    face_encoding = face_recognition.face_encodings(image)[0]
+    known_faces.append(face_encoding)
+    name = os.path.splitext(filename)[0]
+    known_names.append(name)
 
-        face_locations = face_recognition.face_locations(rgb_small_frame)     
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-        face_names = []        
-        if(face_encodings == []):            
-            msg = "You are unknown"
-        else:            
-            for face_encoding in face_encodings:   
-                matches = face_recognition.compare_faces(known_face_encodings, face_encoding)  
-                name = "Unknown"                
-                face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-                best_match_index = np.argmin(face_distances)
-                if matches[best_match_index]: 
-                    name = known_face_names[best_match_index]
-                if(name == "Unknown"):                    
-                    msg = "You are unknown"                
-                else:                    
-                    msg = name       
-                    print(name)      
-                face_names.append(name)            
-            for (top, right, bottom, left), name in zip(face_locations, face_names):
-                top *= 4                
-                right *= 4                
-                bottom *= 4                
-                left *= 4                
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)                
-                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)                
-                font = cv2.FONT_HERSHEY_DUPLEX
-                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)            
-            rand_no = np.random.random_sample()
-            cv2.imwrite(str(rand_no)+".jpg", frame)  
-        print(frame)
-        return (msg)
+# Define a Flask route for the login page
 
-app.run(port=5000,debug=True)
+@app.route('/login', methods=['POST'])
+def login():
+
+            image_data_url = request.form['image']
+
+            # Remove the data URL prefix to get the base64-encoded image data
+            image_data = image_data_url.split(',')[1]
+            print(image_data)
+            # Decode the base64-encoded image data into a Numpy array
+            image_bytes = base64.b64decode(image_data)
+            image_np = np.frombuffer(image_bytes, dtype=np.uint8)
+            image = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
+            print(image)
+            # Find all the faces in the image
+            face_locations = face_recognition.face_locations(image)
+            face_encodings = face_recognition.face_encodings(image, face_locations)
+
+            face_names = []        
+            if(face_encodings == []):            
+                    msg = "You are unknown"
+            else: 
+            # Loop through all the faces found in the image
+                for face_encoding in face_encodings:   
+                        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)  
+                        name = "Unknown"                
+                        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                        best_match_index = np.argmin(face_distances)
+                        if matches[best_match_index]: 
+                            name = known_face_names[best_match_index]
+                        if(name == "Unknown"):                    
+                            msg = "You are unknown"                
+                        else:                    
+                            msg = name       
+                            print(name)      
+                        face_names.append(name)            
+                
+            # If no match was found, return an error response
+         
+                return (msg,name)
+
+               
+            """ results = face_recognition.compare_faces(known_faces, unknown_face_encoding)
+                    # Find the index of the first match
+                    match_index = next((i for i, result in enumerate(results) if result), None)
+                if match_index is not None:
+                        # Return the name of the user if there is a match
+                        return known_names[match_index]
+                    else:
+                            # Return an error message if there is no match
+                            return "Error: face not recognized" 
+                    face_names = []        
+                        if(face_encodings == []):            
+                            msg = "You are unknown"
+                        else:            
+                            for face_encoding in face_encodings:   
+                                matches = face_recognition.compare_faces(known_faces, face_encoding)  
+                                name = "Unknown"                
+                                face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                                best_match_index = np.argmin(face_distances)
+                                if matches[best_match_index]: 
+                                    name = known_face_names[best_match_index]
+                                if(name == "Unknown"):                    
+                                    msg = "You are unknown"                
+                                else:                    
+                                    msg = name       
+                                    print(name)      
+                                face_names.append(name)            
+                        for (top, right, bottom, left), name in zip(face_locations, face_names):
+                                top *= 4                
+                                right *= 4                
+                                bottom *= 4                
+                                left *= 4                
+                                cv2.rectangle(image, (left, top), (right, bottom), (0, 0, 255), 2)                
+                                cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)                
+                                font = cv2.F/watchONT_HERSHEY_DUPLEX
+                                cv2.putText(image, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1) 
+
+                                filename = str(uuid.uuid4()) + '.jpg'
+                                foldername = 'src'
+                                filepath = os.path.join(foldername, filename)
+                                cv2.imwrite(filepath, image)
+                                # return URL of saved image
+                            """
