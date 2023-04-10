@@ -1,0 +1,21 @@
+.my-class {
+    font-family: Arial, sans-serif;
+    color:blue;
+    padding: 10px;
+    font-style: normal;
+
+  }
+  .btn-round {
+    background-image: linear-gradient(to bottom, #3a08f2, #c00be4);
+    background-color: brown;
+    size: 50cm;
+    border-color: bisque;
+    font-size: 20px;
+    padding: 15px;
+    margin-right: 15px;
+    margin-top: 10px;
+    width: 300px;
+    
+  }
+
+  
