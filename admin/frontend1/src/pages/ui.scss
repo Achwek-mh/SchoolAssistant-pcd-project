@@ -1,0 +1,275 @@
+#b5{
+    padding : 14px 17px;
+         width: 50px;
+        height: 60px;
+        border: 0 none;
+        background : transparent;
+        transform: rotate(0deg);
+        transition: transform 250ms;
+        transform-origin: 19% 100%;
+        margin-left: -27px;
+
+    
+     
+      }
+      #b5:after{
+        transform: rotate(0deg);
+        transition: transform 250ms;
+        transform-origin: 19% 100%;
+      }
+      #b5:hover {
+        transform: rotate(-10deg);
+        transition: transform 280ms;
+      }
+    #b4{
+        background : transparent;
+        border: 0 none;
+        margin-right: -70px;
+        margin-left: -10px;
+        margin-top: 10px;
+    
+    }
+    .edit {
+      margin-top: -40px;
+    }
+    
+    
+      .trash {
+        background:#ff6873;
+        width: 18px;
+        height: 20px;
+        display: inline-block;
+        margin:0 auto;
+        
+        position: relative;
+        -webkit-border-bottom-right-radius: 4px;
+        -webkit-border-bottom-left-radius: 4px;
+        -moz-border-radius-bottomright: 4px;
+        -moz-border-radius-bottomleft: 4px;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+    .trash:after {
+        position: absolute;
+        left: -90px;
+        right: 0;
+        bottom: -45px;
+        width: 20px;
+    }
+    .trash span {
+        position: absolute;
+        height: 6.5px;
+        background: #ff6873;
+        color: #7a7878;
+        top: -7px;
+        left: -5.7px;
+        right: -5.5px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        transform: rotate(0deg);
+        transition: transform 250ms;
+        transform-origin: 19% 100%;
+    }
+    .trash span:after {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 3.7px;
+        background: #ff6873;
+        top: -4px;
+        
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        transform: rotate(0deg);
+        transition: transform 250ms;
+        transform-origin: 19% 100%;
+        left: 8.3px;
+    }
+    
+    
+    .trash i {
+        position:relative;
+        width: 1px;
+        height:14px;
+        background:#fff;
+        display:block;
+        margin:3px auto;
+        border-radius: 5px;
+    }
+    .trash i:after {
+        content: '';
+        width: 1px;
+        height: 14px;
+        background: #fff;
+        position: absolute;
+        left: -5px;
+        border-radius: 5px;
+    }
+    .trash i:before {
+        content: '';
+        width: 1px;
+        height: 14px;
+        background: #fff;
+        position: absolute;
+        right: -5px;
+        border-radius: 5px;
+    }
+    
+    .trash:hover span {
+        transform: rotate(-45deg);
+        transition: transform 250ms;
+    }
+
+    ::ng-deep .Modal1 {
+      max-width: 82%;
+      max-height:80px !important;   
+       margin-left: 296px;
+       margin-top: 130px;
+    }
+
+  .inline {
+    display: inline-block;
+  }
+
+  .text  {
+margin-left: -120px; 
+margin-top: 350px;
+z-index: 99999;
+font-family: sans-serif;
+font-weight:800;
+font-size:70px;
+text-align: center; 
+color: #fff;}
+.player{
+  height: 840px;
+  width: 840px;
+  margin-top: -480px;
+ z-index: 9999;
+  margin-left: 150px;
+}
+
+  .admin Button {
+  background: #23a3c3;
+  margin-top: -60px;
+margin-left: 480px;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.text1  {
+  margin-left: -120px; 
+  margin-top: 450px;
+  z-index: 99999;
+  font-family: sans-serif;
+  font-weight:800;
+  font-size:70px;
+  text-align: center; 
+  color: #fff;}
+  
+.butn{
+  position: relative;
+  display: inline-block;
+  margin: 15px;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: #ddddab;
+  background: transparent;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+  border: 2px solid #595d28;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 0 #34285d;
+}
+
+.butn:hover {
+  color: white;
+  box-shadow: inset 0 -100px 0 0 #d7d737;
+}
+.butn:active {
+  transform: scale(1);
+}
+.send {
+ font-family: inherit;
+ font-size: 18px;
+ background: royalblue;
+ color: white;
+ padding: 0.7em 1em;
+ padding-left: 0.9em;
+ display: flex;
+ align-items: center;
+ border: none;
+ border-radius: 16px;
+ overflow: hidden;
+ transition: all 0.2s;
+}
+
+.send span {
+ display: block;
+ margin-left: 0.3em;
+ transition: all 0.3s ease-in-out;
+}
+
+.send svg {
+ display: block;
+ transform-origin: center center;
+ transition: transform 0.3s ease-in-out;
+}
+
+.send:hover .svg-wrapper {
+ animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+.send:hover svg {
+ transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+.send:hover span {
+ transform: translateX(5em);
+}
+
+.send:active {
+ transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+ from {
+  transform: translateY(0.1em);
+ }
+
+ to {
+  transform: translateY(-0.1em);
+ }
+}
+.bi-chevron-down {
+  margin-left: 50px;
+}
+
+.card{
+  width:1500px ;
+  margin-left:-40px
+}
+.cardbody{
+  width:1580px ;
+
+}
+.card1{
+  width:1600px ;
+  margin-left: -150px;
+}
+.cardbody1{
+  width:1600px ;
+  margin-left: -39px;
+
+
+}
+.cardbody11{
+  width:1600px ;
+  margin-left: -20px;
+
+
+}

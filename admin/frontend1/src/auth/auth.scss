@@ -1,0 +1,157 @@
+ .login{
+  position: relative;
+    height: 700px;
+    width: 515px;
+    margin-top: 110px ;
+    margin-left :auto;
+    margin-right: auto;
+    padding: 60px 60px;
+    background: url(https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg) no-repeat center center #505050;
+    background-size: cover;
+    box-shadow: 0px 30px 60px -5px #000;
+ }
+.part1{
+  background-color:rgba(221, 221, 221, 0.749);
+  border-radius: 5px;
+  margin-top: 50px;
+}
+.partt1{
+  background-color:rgba(221, 221, 221, 0.749);
+  border-radius: 5px;
+  margin-top: -20px;
+}
+ .signup{
+  position: relative;
+    height: 880px;
+    width: 555px;
+    margin-top: 20px ;
+    margin-left :auto;
+    margin-right: auto;
+    padding: 60px 60px;
+    background: url(https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg) no-repeat center center #505050;
+    background-size: cover;
+    box-shadow: 0px 30px 60px -5px #000;
+ }
+   .login label {
+    text-align: left;
+    display: block;
+    margin-left: 30px;
+    color: rgb(138, 138, 138);
+  }
+  .signup label {
+    text-align: left;
+    display: block;
+    margin-left: 30px;
+    color: rgb(138, 138, 138);
+  }
+  
+ 
+
+/*   .part1{
+    float:center;
+    max-width: 500px;
+    margin : 250px 680px ;
+    text-align: center; } */
+    .login Input {
+      width: 100%;
+      padding: 15px 15px;
+      margin: 15px 30px 30px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      display: block;
+    
+    }
+    
+    .login select {
+      width: 87%;
+      padding: 15px 15px;
+      margin: 10px 28px 30px ;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      display: block;
+      border-radius: 5px 5px 5px 5px;
+      background-color: white;
+    
+    }
+    
+    .signup Input {
+      width: 100%;
+
+      padding: 15px 15px;
+      margin: 15px 30px 30px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      display: block;
+    
+    }
+    .signup select {
+      width: 87%;
+      padding: 15px 15px;
+      margin: 10px 28px 30px ;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      display: block;
+      border-radius: 5px 5px 5px 5px;
+      background-color: white;
+    
+    }
+    .signup button {
+      background: #23a3c3;
+      color: #fff;
+      border: 0;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    
+  .l1{
+    margin-left: 30px;
+    width: 30px ;
+    height: 56px ;
+    margin-top: 15px;
+  
+  }
+  i {
+    margin-left: -5px;
+  }
+  .l2{
+    color: #2051ad;
+    font-size: 32px;
+    letter-spacing: 0.8px;
+    line-height: 2em;
+    width: 96%;
+    font-weight: 500;
+  }
+  .login button {
+    background: #23a3c3;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .active {
+    border-bottom: 2px solid #1161ed;
+  }
+  h5 {
+    padding-left: 12px;
+    font-size: 22px;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+    letter-spacing: 2px;
+    display: inline-block;
+    font-weight: 100;
+  }
+  
+  h5:first-child {
+    padding-left: 0px;
+  }
+  .nonactive {
+    color: rgba(255, 255, 255, 0.2);
+  }
+  .error {
+    color: #ad2020;
+    margin-top: -20px;
+    margin-right: 200px;
+  } 
