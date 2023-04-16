@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 from flask_mysqldb import MySQL
+from flask import send_from_directory
+
 import json
 import jsonpickle
 import MySQLdb.cursors
@@ -7,9 +9,11 @@ from flask_jwt_extended import JWTManager, get_jwt_identity, create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash 
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS, cross_origin
+import os
+
 import re
 app = Flask(__name__,template_folder='template')
-CORS(app,supports_credentials=True)
+CORS(app)
 jwt = JWTManager(app)
 
 # Change this to your secret key (can be anything, it's for extra protection)
@@ -24,8 +28,24 @@ app.config['MYSQL_DB'] = 'PCD'
 # Intialize MySQL
 mysql = MySQL(app)
 bcrypt = Bcrypt(app)
-# http://localhost:5000/pythonlogin/ - the following will be our login page, which will use both GET and POST requests
- 
+
+
+
+app.config['UPLOAD_FOLDER'] =os.path.abspath('/home/achwak/Desktop/SchoolAssistant-pcd-project/admin') + '/../faces'
+
+
+@app.route('/images/<path:filename>')                       #####" Giving image an url : localhost:5000/images/..."
+def serve_image(filename):
+    
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+
+
+
+###########################      login & registration         ############################################
+
+
 
 @app.route("/register", methods=["POST"])
 def register_user():
@@ -114,9 +134,27 @@ def login():
     else:
         return jsonify({"Error": "Inicio de sesión invalido"}), 200
 
+
+
+####################################"         STUDENT          ########################################"
+
+@app.route('/upload-image-student', methods=['POST'])
+def upload_image_image():
+    if 'image' not in request.files:
+        return jsonify({"error" : "No image provided."})
+
+    f = request.files['image']
+    ff=os.path.splitext(f.filename)[0]
+    type=os.path.splitext(f.filename)[1]
+    f.save(os.path.join(app.config['UPLOAD_FOLDER'], ff+'_STUDENT'+type))
+
+    return jsonify({"message" : "Image uploaded successfully.", "filename" : ff+'_STUDENT'+type})
+
+
 @app.route("/addstudent", methods=["POST"])
 def addstudent():
         if request.method == 'POST':
+            print(request.json)
             Nom=request.json['Nom']
             Info=request.json['Info']
             Image=request.json['Image']
@@ -124,14 +162,17 @@ def addstudent():
             Email=request.json['Email']
 
 
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor = mysql.connection.cursor()
             cursor.execute('SELECT * FROM etudiant WHERE Nom= %s', [Nom])
             account = cursor.fetchone()
             if account:
                 msg='profile already exists'
             else:
-                 data=(Image,Nom,Info,Email)
-                 cursor.execute('INSERT INTO etudiant VALUES (NULL, %s, %s, %s,%s,%s,%s)', data)
+                 query="INSERT INTO etudiant (Nom, Info, Image, Email) VALUES (%s, %s, %s, %s)"
+                 
+                 data=(Nom,Info,Image,Email)
+                 print(data)
+                 cursor.execute(query, data)
                  mysql.connection.commit()
                  msg = 'You have successfully addes a student!'
 
@@ -158,19 +199,18 @@ def editt_view(id):
             data = request.json
             Nom=request.json['Nom']
             Info=request.json['Info']
-            Image=request.json['Image']
 
             Email=request.json['Email']
 
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            sql="UPDATE etudiant SET Nom=%s,Info=%s,Image=%s,Email=%s WHERE id=%s"
-            data=(Image,Nom,Info,Email)
+            sql="UPDATE etudiant SET Nom=%s,Info=%s,Email=%s WHERE id=%s"
+            data=(Nom,Info,Email,id)
             cursor.execute(sql,data)
             mysql.connection.commit()
             cursor.execute("SELECT * FROM etudiant")
             mysql.connection.commit()
             row = cursor.fetchall()
-            return jsonify(row)
+      return jsonify(row)
 
       print('\n # Update successful # \n')
     
@@ -199,6 +239,19 @@ def delete_user(id):
 		cursor.close()
 	
        ##############  enseignant #############""
+@app.route('/upload-image-prof', methods=['POST'])
+def upload_image_prof():
+    if 'image' not in request.files:
+        return jsonify({"error" : "No image provided."})
+
+    f = request.files['image']
+    ff=os.path.splitext(f.filename)[0]
+    type=os.path.splitext(f.filename)[1]
+    f.save(os.path.join(app.config['UPLOAD_FOLDER'], ff+'_PROF'+type))
+
+    return jsonify({"message" : "Image uploaded successfully.", "filename" : ff+'_PROF'+type})
+
+
 @app.route("/getprof", methods=["GET"])
 def getprof():
 
@@ -216,29 +269,83 @@ def getprof():
 @app.route("/addprof", methods=["POST"])
 def addprof():
         if request.method == 'POST':
+            print(request.json)
             Nom=request.json['Nom']
             Info=request.json['Info']
             Image=request.json['Image']
             Contact=request.json['Contact']
 
             Email=request.json['Email']
+            print(Image)
+
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute('SELECT * FROM prof WHERE Nom= %s', [Nom])
+                account = cursor.fetchone()
+                if account:
+                    msg='profile already exists'
+                else:
+                    query = "INSERT INTO prof (Nom, Info, Image, Contact,Email) VALUES (%s, %s, %s, %s,%s)"
+                    values = (Nom, Info, Image, Contact,Email)
+                    cursor.execute(query, values)
+                    mysql.connection.commit()
+
+                    return jsonify({"message" : "Prof added successfully."})
+
+            except:
+                mysql.connection.rollback()
+                return jsonify({"error" : "An error occurred while adding the prof."})
+                    
+@app.route('/delete/prof/<id>',methods=['DELETE'])
+def delete_prof(id):
+	try:
+
+		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute("DELETE FROM prof WHERE id='"+ id +"'")
+		mysql.connection.commit()
+
+		
+		cursor.execute("SELECT * FROM prof")
+		mysql.connection.commit()
+		row = cursor.fetchall()
+        
+		return jsonify(row)
+	except Exception as e:
+		print(e)
+	finally:
+		cursor.close()
+@app.route('/update/prof/<id>',methods=["PUT"])
+def editt_prof(id):
+    try:
+      if request.method == 'PUT':
+            id=int(id)
+            data = request.json
+            Nom=request.json['Nom']
+            Info=request.json['Info']
+            Contact=request.json['Contact']
+
+            Email=request.json['Email']
 
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM prof WHERE Nom= %s', [Nom])
-            account = cursor.fetchone()
-            if account:
-                msg='profile already exists'
-            else:
-                 data=(Image,Nom,Info,Contact,Email)
-                 print(data)
-                 cursor.execute('INSERT INTO prof VALUES (NULL, %s, %s, %s,%s,%s)', data)
-                 mysql.connection.commit()
-                 msg = 'You have successfully addes a prof!'
+            sql="UPDATE prof SET Nom=%s,Info=%s,Email=%s ,Contact=%s WHERE id=%s"
+            data=(Nom,Info,Email,Contact,id)
+            print(data)
+            cursor.execute(sql,data)
+            mysql.connection.commit()
+            cursor.execute("SELECT * FROM prof")
+            mysql.connection.commit()
+            row = cursor.fetchall()
+            print(row)
+      return jsonify(row)
 
-            return jsonify(msg)
-                    
+      print('\n # Update successful # \n')
+    
+    except Exception as e:
+	      print(e)
 
-#######################"" event ###############""
+	
+#######################""          event               ###############""
+
 @app.route("/addevent", methods=["POST"])
 def addevent():
             print(request.json)
