@@ -287,9 +287,16 @@ const deletee =async(tdata,e)=>{
              {Json && Json.filter((val)=>{
                 if(searchtext==="")
                 return val ;
-                else if (val.name.toLowerCase().includes(searchtext.toLowerCase())){
+                else if (val.Nom.toLowerCase().includes(searchtext.toLowerCase())){
                   return val
                 }
+                else if (val.Description.toLowerCase().includes(searchtext.toLowerCase())){
+                  return val
+                }
+                else if (val.Encadrant.toLowerCase().includes(searchtext.toLowerCase())){
+                  return val
+                }
+                
               }).map((tdata, index) => ( 
                     <tr key={index}>
                   <td>{index+1}</td> 

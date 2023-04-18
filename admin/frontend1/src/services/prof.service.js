@@ -1,5 +1,5 @@
 import axios from 'axios';
-const AUTH_API_BASE_URL = "http://localhost:5000";
+const AUTH_API_BASE_URL = "http://localhost:5001";
 class profService{
 save (Image,Nom,Info,Contact,Email){
     const userData = new FormData();
@@ -22,7 +22,7 @@ save (Image,Nom,Info,Contact,Email){
                 return axios.delete(AUTH_API_BASE_URL+`/delete/prof/${id}`)
             }
     updateProf (id,member ){
-              return axios.put(`http://localhost:5000/update/prof/${id}`,member)} 
+              return axios.put(`http://localhost:5001/update/prof/${id}`,member)} 
 
 
 }

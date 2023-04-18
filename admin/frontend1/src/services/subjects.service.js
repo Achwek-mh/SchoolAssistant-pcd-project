@@ -1,5 +1,5 @@
 import axios from 'axios';
-const AUTH_API_BASE_URL = "http://localhost:5000";
+const AUTH_API_BASE_URL = "http://localhost:5001";
 class sujetService{
 savepfe (Description,Nom,Encadrant,Domaine,Mots_clés){
     const userData = new FormData();
@@ -27,7 +27,7 @@ savepfe (Description,Nom,Encadrant,Domaine,Mots_clés){
                 return axios.delete(AUTH_API_BASE_URL+`/delete/sujet_pfe/${id}`)
             }
     updatesujetpfe (id,member ){
-              return axios.put(`http://localhost:5000/update/sujet_pfe/${id}`,member)} 
+              return axios.put(`http://localhost:5001/update/sujet_pfe/${id}`,member)} 
 
 
 savepcd (Description,Nom,Encadrant,Domaine,Mots_clés){
@@ -53,7 +53,7 @@ savepcd (Description,Nom,Encadrant,Domaine,Mots_clés){
                             return axios.delete(AUTH_API_BASE_URL+`/delete/sujet_pcd/${id}`)
                         }
                 updatesujetpcd (id,member ){
-                          return axios.put(`http://localhost:5000/update/sujet_pcd/${id}`,member)} 
+                          return axios.put(`http://localhost:5001/update/sujet_pcd/${id}`,member)} 
             
             
 

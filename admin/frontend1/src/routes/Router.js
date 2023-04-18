@@ -9,11 +9,9 @@ import ResultPFE from "../pages/result/pfe";
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
 const Home= lazy(() => import("../pages/Home"));
-const Tables= lazy(() => import("../pages/Tables"));
 const Prof= lazy(() => import("../pages/profiles/prof"));
 const Student= lazy(() => import("../pages/profiles/student"));
 const Event= lazy(() => import("../pages/events"));
-const Ds= lazy(() => import("../pages/schedules/ds"));
 const Exam= lazy(() => import("../pages/schedules/exam"));
 const Rattrapage= lazy(() => import("../pages/schedules/rattrapage"));
 const Temps= lazy(() => import("../pages/schedules/temps"));
@@ -43,8 +41,7 @@ export default function Router(){
       children: [
         {path: "/",
         element:   <Prof /> /*  , */},
-        {path: "/table",
-        element:   <Tables />  /*  */},
+      
         
         {path: "/student",exact:true,
         element:   <Student /> },
@@ -64,9 +61,12 @@ export default function Router(){
         element:   <Meetonline /> },
         {path: "/presentiel",exact:true,
         element:   <Meetpresentiel /> },
-
-
-       
+        {path: "/emploitemps",exact:true,
+        element:   <Temps /> },
+        {path: "/emploiexam",exact:true,
+        element:   <Exam /> },
+        {path: "/emploirattrapage",exact:true,
+        element:   <Rattrapage /> },
       ]
       },
     ]);

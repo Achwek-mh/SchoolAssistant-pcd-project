@@ -1,5 +1,5 @@
 import axios from 'axios';
-const AUTH_API_BASE_URL = "http://localhost:5000";
+const AUTH_API_BASE_URL = "http://localhost:5001";
 class eventService{
 save (Nom,description,Date){
     const userData = new FormData();
@@ -21,7 +21,7 @@ save (Nom,description,Date){
                 return axios.delete(AUTH_API_BASE_URL+`/delete/event/${id}`)
             }
     updateevent (id,member ){
-              return axios.put(`http://localhost:5000/update/event/${id}`,member)} 
+              return axios.put(`http://localhost:5001/update/event/${id}`,member)} 
 
 
 }

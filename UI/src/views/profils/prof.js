@@ -1,7 +1,7 @@
 import { useState, useEffect , useCallback} from "react";
 import {Button,Label,Form,FormGroup,CustomInput,Input,Container} from "reactstrap";
 
-export default function Général() {
+export default function Prof() {
   const [message, setMessage] = useState("");
   const [answer, setAnswer] = useState("")
 
@@ -97,7 +97,6 @@ export default function Général() {
           type="text"
           value={answer}
         />  
-         <Button type="submit">Send</Button>
         </Form>
      
     </div>

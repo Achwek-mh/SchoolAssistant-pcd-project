@@ -1,6 +1,8 @@
-import { Routes , Route , useNavigate } from "react-router-dom";
+import { Routes , Route , useNavigate  } from "react-router-dom";
 import React from "react";
-import { useState , useEffect, useRef , Component }  from "react";
+import { useState , useEffect, useRef , Component ,useContext}  from "react";
+import { USER_TYPES, use } from "../constants";
+
 
 
 import {
@@ -22,8 +24,12 @@ import Webcam from 'react-webcam';
 // reactstrap components
 
 export default function Face () {
-    const [showCamera, setShowCamera] = useState(false);
- 
+  const [token, settoken] = useState(false);
+
+  const [user, setUser] = useState(USER_TYPES.UNKNOWN);
+  const { value, setValue } = useContext(use);
+  const navigate = useNavigate();
+
 
   const handleSpeechRecognition =() => {
     
@@ -62,7 +68,8 @@ export default function Face () {
 
     recognition.onend = () => {
       console.log("Speech recognition ended");
-      handleSpeechRecognition();
+      if (!token)
+      {handleSpeechRecognition();}
     };
 
     recognition.start();
@@ -75,9 +82,7 @@ export default function Face () {
     const [message, setMessage] = useState("");
 
     const [logged_in, setlogged_in] = useState(false);
-    const [token, settoken] = useState(false);
 
-    const navigate = useNavigate();
     const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (!imageSrc) {
@@ -94,10 +99,67 @@ export default function Face () {
           formData        
       })
         .then((response) =>{ 
-          console.log(response)
-          setName(response.statusText)
+          console.log(response);
+          if (response.ok) {
+            response.json().then((data) => {
+              const [state, name] = data;
+              console.log(state, name);
+              setName(name)
+              setlogged_in(true)
+              switch (state) {
+                case "PROF":
+                  setUser(USER_TYPES.PROF);
+                  setValue(USER_TYPES.PROF);
+                  break;
+                case "STUDENT":
+                  setUser(USER_TYPES.STUDENT);
+                  setValue(USER_TYPES.STUDENT);
+                  break;
+                case "PUBLIC":
+                  setUser(USER_TYPES.PUBLIC);
+                  setValue(USER_TYPES.PUBLIC);
+                  break;
+                default:
+                  break;
+              }
+              if (state !== "PUBLIC") {
+                setTimeout(() => {
+                  navigatetoprof(true);
+                }, 5000);
+              }
+            });
+          } else {
+            console.log("Login failed.");
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      }        
+        
+        
+        
+        
+             /*      setName(response.statusText)
         setlogged_in(true)
-        if (response!== (null || "You are unknown")){
+        switch (data.state) {
+          case "PROF":
+            setUser(USER_TYPES.PROF);
+            setValue(USER_TYPES.PROF);
+            break;
+          case "STUDENT":
+            setUser(USER_TYPES.STUDENT);
+            setValue(USER_TYPES.STUDENT);
+            break;
+          case "PUBLIC":
+            setUser(USER_TYPES.PUBLIC);
+            setValue(USER_TYPES.PUBLIC);
+            break;
+          default:
+            break;
+        }
+         */
+       /*  if (response!== (null || "You are unknown")){
         setTimeout((i) => {
          navigatetoprof(true);
        }, 5000);
@@ -107,9 +169,9 @@ export default function Face () {
      
       .catch(error => {
         console.error(error);
-      });
+      }) ;
   
-  }
+  }*/
 useEffect(() => {
     if (name!== (null || "You are unknown")){
  const timerId = setInterval(() => {
@@ -117,7 +179,7 @@ useEffect(() => {
  }, 1000);
 
  return () => clearInterval(timerId);}
-}, []);
+}, [name]);
 
 const [timeLeft, setTimeLeft] = useState(8);
 
@@ -128,7 +190,6 @@ useEffect(() => {
    handleSpeechRecognition()
   }, [message]);
  
-   
     return (
       <div className="page-header header-filter">
         <div className="wrapper">
@@ -138,7 +199,7 @@ useEffect(() => {
         <Container>
           <div className="content-center brand" ></div>
         <>
-            {logged_in == false ?
+            {logged_in === false ?
             <>
            
             <div className="form-group">

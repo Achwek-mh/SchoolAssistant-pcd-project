@@ -9,19 +9,16 @@ const navigation = [
     children:[
       {
         title:"Temps ",
-        href:"/temps"
+        href:"/emploitemps"
       },
+    
       {
-        title:"ds ",
-        href:"/ds"
-      },
-      {
-        title:"exam ",
-        href:"/exam"
+        title:"exam & ds",
+        href:"/emploiexam"
       },
       {
         title:"rattrapage ",
-        href:"/rattrapage"
+        href:"/emploirattrapage"
       }
     ]
   },
@@ -32,7 +29,7 @@ const navigation = [
     children:[
       {
         title:"prof ",
-        href:"/prof"
+        href:"/"
       },
       {
         title:"students ",
@@ -105,8 +102,11 @@ const Sidebar = () => {
 
   };
   let location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
-    const toggle = () => setIsOpen(!isOpen);
+  const [isOpen, setIsOpen] = useState({});
+    const toggle = (id) =>{ setIsOpen((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));}
   return (
      <div className="p-3 ">
       <div className="d-flex align-items-center">
@@ -126,15 +126,17 @@ const Sidebar = () => {
          {item.children ?(  
         
          <NavLink
-                href="#" onClick={toggle}
+         onClick={() => toggle(index)}
+         href="#" 
                 className={
                   location.pathname === item.href
                     ? "text-primary nav-link py-3"
                     : "nav-link text-secondary py-3"
                 }
-              style={{marginTop:"20px"}}>
+              style={{marginTop:"20px",position: "relative"}}>
                  <i className={item.icon}></i>
-                <span className="ms-1 d-inline-flex align-items-center">{item.title }   <i className="bi-chevron-down toggle-btn ml-5" onClick={() => setIsOpen(!isOpen)}  ></i>                 </span> 
+                <span className="ms-1 d-inline-flex align-items-center">{item.title }  </span> 
+                 <i className="bi-chevron-down toggle-btn ml-5"  style={{ position: "absolute", right: 50, top: "50%", transform: "translateY(-50%)" }} onClick={() => setIsOpen(!isOpen)}  ></i>                 
 
              
               </NavLink> ):(   <NavLink
@@ -154,7 +156,7 @@ const Sidebar = () => {
           {item.children && (
         
 
-          <Collapse isOpen={isOpen} style={{marginLeft:"50px"}} >
+          <Collapse isOpen={isOpen[index]} style={{marginLeft:"50px"}} >
             {item.children.map((subitem,subindex)=>( <NavItem key={subindex}>
                   <NavLink href={subitem.href}>{subitem.title} </NavLink>
                 </NavItem>

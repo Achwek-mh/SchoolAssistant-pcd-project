@@ -258,7 +258,7 @@ const handleInputChange = event => {
              {Json && Json.filter((val)=>{
                 if(searchtext==="")
                 return val ;
-                else if (val.name.toLowerCase().includes(searchtext.toLowerCase())){
+                else if (val.Nom.toLowerCase().includes(searchtext.toLowerCase())){
                   return val
                 }
               }).map((tdata, index) => ( 

@@ -88,11 +88,11 @@ const Prof = () => {
           Email: Email
         };
         console.log(prof)
-        axios.post('http://localhost:5000/addprof', prof)
+        axios.post('http://localhost:5001/addprof', prof)
           .then(response => {
             console.log(response.data.message);
             // Update the list of entries from the Prof table
-            axios.get('http://localhost:5000/getprof')
+            axios.get('http://localhost:5001/getprof')
               .then(response => {
                 console.log(response)
                 setMessage("The tutorial was updated successfully!");
@@ -374,13 +374,13 @@ const deletee =async(tdata,e)=>{
              {Json && Json.filter((val)=>{
                 if(searchtext==="")
                 return val ;
-                else if (val.name.toLowerCase().includes(searchtext.toLowerCase())){
+                else if (val.Nom.toLowerCase().includes(searchtext.toLowerCase())){
                   return val
                 }
               }).map((tdata, index) => ( 
                     <tr key={index}>
                   <td>{index+1}</td> 
-                    { <td>{tdata.Image &&<> <img src={`http://localhost:5000/images/${tdata.Image}`} alt="image"  className="avatar rounded-circle mr-3" style={{width:"40px",height:"40px"}} /> </>}   </td> }
+                    { <td>{tdata.Image &&<> <img src={`http://localhost:5001/images/${tdata.Image}`} alt="image"  className="avatar rounded-circle mr-3" style={{width:"40px",height:"40px"}} /> </>}   </td> }
                     
                
                 <td>{tdata && tdata.Nom}</td>

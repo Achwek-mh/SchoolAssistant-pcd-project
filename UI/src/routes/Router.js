@@ -1,9 +1,8 @@
 import { useRoutes } from "react-router-dom";
-import { lazy } from "react";
-
+import { lazy,useContext,useState} from "react";
 import { Navigate } from "react-router-dom";
+import { USER_TYPES,USER,use } from '../constants';
 
-import PageHeader from "components/PageHeader/PageHeader.js";
 const Profil= lazy(() => import("../views/profils/profils.js"));
 const Etud= lazy(() => import("../views/profils/etud.js"));
 const Event= lazy(() => import("../views/event.js"));
@@ -17,35 +16,36 @@ const Sujetpcd= lazy(() => import("../views/sujets/sujet_pcd.js"));
 const Sujetpfe= lazy(() => import("../views/sujets/sujet_pfe.js"));
 const Sujetpe= lazy(() => import("../views/sujets/sujet_pe.js"));
 const Face= lazy(() => import("../views/face.js"));
-const Général=lazy(() => import("../views/général.js"));
+
 const Result= lazy(() => import("../views/result/result.js"));
-const ResultPCD= lazy(() => import("../views/result/result_pcd.js"));
-const ResultPFE= lazy(() => import("../views/result/result_pfe.js"));
-const ResultPE= lazy(() => import("../views/result/result_pe.js"));
-const ResultEXAM= lazy(() => import("../views/result/result_exam.js"));
+const Emploitemps= lazy(() => import("../views/schedules/emploitemps.js"));
+
+
+
 
 
 
 export default function Router(){
-
+  const [value,setValue]=useState(USER)
   let ThemeRoutes = useRoutes([
  
 
     
       { path: "/",
-      element: <Index /> ,
-      
+/*       element:<Profuser><Index /></Profuser>  ,
+ */      element:<Unknownuser><Index /></Unknownuser> ,
+
       },
       { path: "/profil",
-      element: <Profil /> ,
+      element: <Profil />,
+      
+      },
+      { path: "/emploitemps",
+      element: <Emploitemps/>,
       
       },
       { path: "/prof",
-      element: <Prof /> ,
-      
-      },
-      { path: "/general",
-      element: <Général/> ,
+      element:<Profuser> <Prof /></Profuser>,
       
       },
       { path: "/etud",
@@ -53,23 +53,23 @@ export default function Router(){
       
       },
       { path: "/sujet",
-      element: <Sujet /> ,
+      element: <Studentuser><Sujet></Sujet></Studentuser> ,
       
       },
       { path: "/sujet_pcd",
-      element: <Sujetpcd /> ,
+      element: <Studentuser><Sujetpcd /></Studentuser> ,
       
       },
       { path: "/result",
-      element: <Result /> ,
+      element: <Studentuser><Result /></Studentuser> ,
       
       },
       { path: "/reunion",
-      element: <Reunion /> ,
+      element: <Profuser><Reunion /></Profuser> ,
       
       },
       { path: "/event",
-      element: <Event /> ,
+      element: <Publicuser><Event /> </Publicuser>,
       
       },
       { path: "/login",
@@ -80,6 +80,66 @@ export default function Router(){
     ]);
     
 
-return ThemeRoutes ;}
+return (
+  <use.Provider value={{value,setValue}}>
+    {ThemeRoutes}
+  </use.Provider>
+);}
 
- 
+
+function Profuser({ children }) {
+  const { value, setValue } = useContext(use);
+
+  if (value === USER_TYPES.PROF) {
+    console.log(value)
+
+    return (
+      <>
+        {children}
+      </>
+    );
+  } else {
+    return <Navigate to={"/"} />;
+  }
+}
+function Studentuser({ children }) {
+  const { value, setValue } = useContext(use);
+  if (value === USER_TYPES.STUDENT) {
+    console.log(value)
+
+    return (
+      <>
+        {children}
+      </>
+    );
+  } else {
+    return <Navigate to={"/"} />;
+  }
+}
+function Publicuser({ children }) {
+  const { value, setValue } = useContext(use);
+  if ((value === USER_TYPES.PROF) && (value === USER_TYPES.STUDENT) ) {
+    console.log(value)
+    return (
+      <>
+        {children}
+      </>
+    );
+  } else {
+    return <Navigate to={"/login"} />;
+  }
+}
+function Unknownuser({ children }) {
+  const { value, setValue } = useContext(use);
+  if (!((value === USER_TYPES.PUBLIC) || (value === USER_TYPES.UNKNOWN)) ) {
+    console.log(value)
+    return (
+      <>
+        {children}
+      </>
+    );
+  } else {
+    return <Navigate to={"/login"} />;
+  }
+}
+

@@ -1,5 +1,5 @@
 import axios from 'axios';
-const AUTH_API_BASE_URL = "http://localhost:5000";
+const AUTH_API_BASE_URL = "http://localhost:5001";
 class resultService{
 savepfe (Remarque,Etudiant,Moyenne){
     const userData = new FormData();
@@ -21,7 +21,7 @@ savepfe (Remarque,Etudiant,Moyenne){
                 return axios.delete(AUTH_API_BASE_URL+`/delete/result_pfe/${id}`)
             }
     updateresultpfe (id,member ){
-              return axios.put(`http://localhost:5000/update/result_pfe/${id}`,member)} 
+              return axios.put(`http://localhost:5001/update/result_pfe/${id}`,member)} 
 
 
 savepcd (Remarque,Etudiant,Moyenne){

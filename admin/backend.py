@@ -32,14 +32,16 @@ bcrypt = Bcrypt(app)
 
 
 app.config['UPLOAD_FOLDER'] =os.path.abspath('/home/achwak/Desktop/SchoolAssistant-pcd-project/admin') + '/../faces'
+app.config['UPLOAD_FOLDER1'] =os.path.abspath('/home/achwak/Desktop/SchoolAssistant-pcd-project/admin') + '/../emploi'
+app.config['UPLOAD_FOLDER2'] =os.path.abspath('/home/achwak/Desktop/SchoolAssistant-pcd-project/admin') + '/../emploiexam'
+
+
 
 
 @app.route('/images/<path:filename>')                       #####" Giving image an url : localhost:5000/images/..."
 def serve_image(filename):
     
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
-
 
 
 
@@ -978,6 +980,200 @@ def delete_presentiel_meet(id):
 	finally:
 		cursor.close() 
 ########################### temps ###############""
+@app.route('/upload-emploi', methods=['POST'])
+def upload_emploi():
+    if 'emploi' not in request.files:
+        return jsonify({"error" : "No image provided."})
+
+    f = request.files['emploi']
+    ff=os.path.splitext(f.filename)[0]
+    type=os.path.splitext(f.filename)[1]
+    f.save(os.path.join(app.config['UPLOAD_FOLDER1'], ff+type))
+
+    return jsonify({"message" : "Image uploaded successfully.", "filename" :  ff+type})
+@app.route('/emplois/<path:filename>')                      
+def serve_emploi(filename):
+    
+    return send_from_directory(app.config['UPLOAD_FOLDER1'], filename)
+
+
+
+
+@app.route("/addemploi", methods=["POST"])
+def addemploi():
+        if request.method == 'POST':
+
+            print(request.json)
+
+            emploi=request.json['emploi']
+            classe=request.json['classe']
+            semestre=request.json['semestre']
+
+
+
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM emploitemps WHERE emploi= %s', [emploi])
+            account = cursor.fetchone()
+            if account:
+                msg='exam already exists'
+            else:
+                 data=(classe,semestre,emploi)
+                 cursor.execute('INSERT INTO emploitemps VALUES (NULL, %s , %s, %s)', data)
+                 mysql.connection.commit()
+                 msg = 'You have successfully addes a exam!'
+
+            return jsonify(msg)
+        
+
+
+@app.route("/getemploi", methods=["GET"])
+def getemploi():
+ 
+    try:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM emploitemps ')
+            exam = cursor.fetchall()
+            
+            return jsonify(exam)
+
+    except Exception as e:
+		    print(e)
+      
+@app.route('/delete/emploi/<id>',methods=['DELETE'])
+def delete_exam(id):
+	try:
+
+		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute("DELETE FROM emploitemps WHERE id='"+ id +"'")
+		mysql.connection.commit()
+
+		
+		cursor.execute("SELECT * FROM emploitemps")
+		mysql.connection.commit()
+		row = cursor.fetchall()
+        
+		return jsonify(row)
+	except Exception as e:
+		print(e)
+	finally:
+		cursor.close() 
+
+
+@app.route('/upload-emploiexam', methods=['POST'])
+def upload_emploiexam():
+    if 'emploi' not in request.files:
+        return jsonify({"error" : "No image provided."})
+
+    f = request.files['emploi']
+    ff=os.path.splitext(f.filename)[0]
+    type=os.path.splitext(f.filename)[1]
+    f.save(os.path.join(app.config['UPLOAD_FOLDER2'], ff+type))
+
+    return jsonify({"message" : "Image uploaded successfully.", "filename" :  ff+type})
+@app.route('/emploi/<path:filename>')                      
+def serve_emploiexam(filename):
+    
+    return send_from_directory(app.config['UPLOAD_FOLDER2'], filename)
+
+
+@app.route("/addemploiexam", methods=["POST"])
+def addemploiexam():
+        if request.method == 'POST':
+
+            print(request.json)
+            type=request.json['type']
+
+            emploi=request.json['emploi']
+            classe=request.json['classe']
+            semestre=request.json['semestre']
+
+
+
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM emploiexam WHERE emploi= %s', [emploi])
+            account = cursor.fetchone()
+            if account:
+                msg='exam already exists'
+            else:
+                 data=(type,classe,semestre,emploi)
+                 cursor.execute('INSERT INTO emploiexam VALUES (NULL, %s , %s, %s,%s)', data)
+                 mysql.connection.commit()
+                 msg = 'You have successfully addes a exam!'
+
+            return jsonify(msg)
+        
+
+
+@app.route("/getemploiexam", methods=["GET"])
+def getemploiexam():
+ 
+    try:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM emploiexam ')
+            exam = cursor.fetchall()
+            
+            return jsonify(exam)
+
+    except Exception as e:
+		    print(e)
+      
+
+
+
+@app.route('/update/emploiexam/<id>',methods=["PUT"])
+def edittexam(id):
+    try:
+      if request.method == 'PUT':
+            schedule=request.json['schedule']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            sql="UPDATE emploiexam SET schedule=%s WHERE id=%s"
+            data=(schedule)
+            cursor.execute(sql,data)
+            mysql.connection.commit()
+            cursor.execute("SELECT * FROM emploiexam")
+            mysql.connection.commit()
+            row = cursor.fetchall()
+            return jsonify(row)
+
+      print('\n # Update successful # \n')
+    
+    except Exception as e:
+	      print(e)
+
+	
+
+@app.route('/delete/emploiexam/<id>',methods=['DELETE'])
+def delete_emploiexam(id):
+	try:
+
+		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute("DELETE FROM emploiexam WHERE id='"+ id +"'")
+		mysql.connection.commit()
+
+		
+		cursor.execute("SELECT * FROM emploiexam")
+		mysql.connection.commit()
+		row = cursor.fetchall()
+        
+		return jsonify(row)
+	except Exception as e:
+		print(e)
+	finally:
+		cursor.close() 
+
+
+
+
+
+
+
+""" 
+
+
+
+
+
+
 @app.route("/addexam", methods=["POST"])
 def addexam():
         if request.method == 'POST':
@@ -1125,6 +1321,6 @@ def delete_ds(id):
 	except Exception as e:
 		print(e)
 	finally:
-		cursor.close()
+		cursor.close() """
 if __name__ == "__main__":
-    app.run(debug=True) 
+    app.run(debug=True,port=5001)
