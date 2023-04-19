@@ -33,7 +33,7 @@ export default function Router(){
     
       { path: "/",
 /*       element:<Profuser><Index /></Profuser>  ,
- */      element:<Unknownuser><Index /></Unknownuser> ,
+ */      element:<Publicuser><Index/></Publicuser> ,
 
       },
       { path: "/profil",
@@ -129,17 +129,5 @@ function Publicuser({ children }) {
     return <Navigate to={"/login"} />;
   }
 }
-function Unknownuser({ children }) {
-  const { value, setValue } = useContext(use);
-  if (!((value === USER_TYPES.PUBLIC) || (value === USER_TYPES.UNKNOWN)) ) {
-    console.log(value)
-    return (
-      <>
-        {children}
-      </>
-    );
-  } else {
-    return <Navigate to={"/login"} />;
-  }
-}
+
 
