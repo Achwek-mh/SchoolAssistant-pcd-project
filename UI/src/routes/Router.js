@@ -118,7 +118,7 @@ function Studentuser({ children }) {
 }
 function Publicuser({ children }) {
   const { value, setValue } = useContext(use);
-  if ((value === USER_TYPES.PROF) && (value === USER_TYPES.STUDENT) ) {
+  if ((value === USER_TYPES.PROF) || (value === USER_TYPES.STUDENT) ) {
     console.log(value)
     return (
       <>
